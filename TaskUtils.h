@@ -6,6 +6,7 @@ class TaskUtils
 public:
 	static const char* _clouds_path;
 	static const char* _bc_path;
+	static const char* _apple_path;
 
 	static int RandomInt(size_t range = 0);
 	static char KeyPressed();

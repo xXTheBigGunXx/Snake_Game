@@ -20,6 +20,7 @@ private:
 
 	Texture2D _clouds;
 	Texture2D _background;
+	Texture2D _apple_texture;
 
 	float _background_x;
 

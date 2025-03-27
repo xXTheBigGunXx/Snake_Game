@@ -7,15 +7,19 @@
 class ApplesInformation {
 private:
 	//std::vector<std::pair<int, int>> _coordinates;
-	void GenerateNApples();
 	bool Contains(const std::pair<int, int>& pair);
 	bool Equals(const std::pair<int, int>& left, const std::pair<int, int>& right);
-	int _index;
-	int _count;
+
+	int _width;
+	int _height;
 public:
 	std::vector<std::pair<int, int>> _coordinates;
-	ApplesInformation(size_t n);
+	int _index;
+	int _count;
+
+	ApplesInformation(size_t n, int width);
 	~ApplesInformation();
+	void GenerateNApples();
 };
 
 #endif

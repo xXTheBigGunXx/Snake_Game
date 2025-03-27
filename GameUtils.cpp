@@ -13,9 +13,10 @@ GameUtils::GameUtils() {
 
 	_clouds = LoadTexture(TaskUtils::_clouds_path);
 	_background = LoadTexture(TaskUtils::_bc_path);
+	_apple_texture = LoadTexture(TaskUtils::_apple_path);
 
 	_snake = new Snake((GetScreenWidth() - _background_squares_length) / 2, (GetScreenHeight() - _background_squares_length) / 2, _background_squares_length, _FPS);
-	_apples = new ApplesInformation(_apple_count);
+	_apples = new ApplesInformation(_apple_count, _background_squares_length);
 
 	_background_x = 0.0f;
 	_frame_count = _FPS / _snake->_speed;
@@ -24,6 +25,7 @@ GameUtils::GameUtils() {
 GameUtils::~GameUtils() {
 	UnloadTexture(_clouds);
 	UnloadTexture(_background);
+	UnloadTexture(_apple_texture);
 
 	delete _snake;
 	delete _apples;
@@ -40,6 +42,7 @@ void GameUtils::RunGame() {
 		LoadBackground();
 
 		LoopSnake();
+		PlaceAndUpdateApples();
 
 		EndDrawing();
 		_frame_count++;
@@ -77,7 +80,7 @@ void GameUtils::LoopSnake() {
 
 	std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
 
-	if (_snake->AccselerationZero() || _frame_count == _FPS / _snake->_speed) {
+	if (_snake->AccselerationZero() || _frame_count % (_FPS / _snake->_speed) == 0) {
 		_snake->_accseleration = _snake->_temp_accseleration;
 		_frame_count = 0;
 	}
@@ -92,5 +95,9 @@ void GameUtils::LoopSnake() {
 }
 
 void GameUtils::PlaceAndUpdateApples() {
+	_apples->GenerateNApples();
 
+	for (size_t i = 0; i < _apples->_coordinates.size(); i++) {
+		DrawTexture( _apple_texture, _snake->_x_offset + _apples->_coordinates[i].first, _snake->_y_offset + _apples->_coordinates[i].second, WHITE);
+	}
 }

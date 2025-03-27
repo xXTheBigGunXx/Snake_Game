@@ -5,7 +5,7 @@
 #include <utility>
 
 class Snake {
-private:
+public:
 	std::list < std::pair<int, int>> _snakes_body;
 	const int _snakes_squere_width = 60;
 	int _move_per_frame;
@@ -15,7 +15,6 @@ private:
 
 	int _x_offset;
 	int _y_offset;
-public:
 	const int _speed = 8;
 
 	std::pair<int, int> _accseleration;

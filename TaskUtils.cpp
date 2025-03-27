@@ -1,4 +1,5 @@
 #include "TaskUtils.h"
+#include <cmath>
 
 namespace win {
     #include <windows.h>
@@ -9,17 +10,14 @@ namespace win {
 
 const char* TaskUtils::_clouds_path = "Textures\\clouds.jpg";
 const char* TaskUtils::_bc_path = "Textures\\background.jpg";
+const char* TaskUtils::_apple_path = "Textures\\apple.jpg";
 
 int TaskUtils::RandomInt(size_t range) {
-    if (range == 0) {
-        return 0;
-    }
-
     int num;
     if (win::BCryptGenRandom(NULL, (win::PUCHAR)&num, sizeof(num), BCRYPT_USE_SYSTEM_PREFERRED_RNG) != 0) {
         return 0;
     }
-    return static_cast<int>(num % range);
+    return std::round(static_cast<int>(num % range) / 60)  * 60;
 }
 
 char TaskUtils::KeyPressed() {
