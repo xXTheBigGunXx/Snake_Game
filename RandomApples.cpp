@@ -2,17 +2,18 @@
 #include "TaskUtils.h"
 
 ApplesInformation::ApplesInformation(size_t n) {
-	GenerateNApples(n);
+	_index = 0;
+	_count = n;
 }
 ApplesInformation::~ApplesInformation() {
 	_coordinates.clear();
 }
 
-void ApplesInformation::GenerateNApples(size_t n) {
-	for (size_t i = 0; i < n; i++){
+void ApplesInformation::GenerateNApples() {
+	for (; _index < _count; _index++){
 		std::pair<int, int> coords(TaskUtils::RandomInt(800), TaskUtils::RandomInt(450));
 		if (Contains(coords)) {
-			i++;
+			_index--;
 			continue;
 		}
 		_coordinates.push_back(coords);

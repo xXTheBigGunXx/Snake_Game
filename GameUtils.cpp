@@ -2,6 +2,7 @@
 #include "TaskUtils.h"
 #include <algorithm>
 #include <utility>
+#include <iostream>
 
 GameUtils::GameUtils() {
 	InitWindow(0, 0, "");
@@ -12,10 +13,12 @@ GameUtils::GameUtils() {
 
 	_clouds = LoadTexture(TaskUtils::_clouds_path);
 	_background = LoadTexture(TaskUtils::_bc_path);
-	_background_x = 0.0f;
 
-	_snake = new Snake((GetScreenWidth() - _background_squares_length) / 2, (GetScreenHeight() - _background_squares_length) / 2, _background_squares_length);
-	_apples = new ApplesInformation();
+	_snake = new Snake((GetScreenWidth() - _background_squares_length) / 2, (GetScreenHeight() - _background_squares_length) / 2, _background_squares_length, _FPS);
+	_apples = new ApplesInformation(_apple_count);
+
+	_background_x = 0.0f;
+	_frame_count = _FPS / _snake->_speed;
 }
 
 GameUtils::~GameUtils() {
@@ -39,6 +42,7 @@ void GameUtils::RunGame() {
 		LoopSnake();
 
 		EndDrawing();
+		_frame_count++;
 	}
 }
 
@@ -69,7 +73,24 @@ void GameUtils::LoadBackground() {
 }
 
 void GameUtils::LoopSnake() {
+	_snake->_temp_accseleration = _snake->DistributeAccseleration();
+
+	std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
+
+	if (_snake->AccselerationZero() || _frame_count == _FPS / _snake->_speed) {
+		_snake->_accseleration = _snake->_temp_accseleration;
+		_frame_count = 0;
+	}
+
+	_snake->Pop_Back();
+	_snake->Push_Front(_snake->IncramentedPair());
+	
+
 	std::for_each(_snake->Begin(), _snake->End(), [&](const std::pair<int,int>& pair) {
 		DrawRectangle(pair.first, pair.second, _snake->GetSquaresLength(), _snake->GetSquaresLength(), RED);
 	});
+}
+
+void GameUtils::PlaceAndUpdateApples() {
+
 }

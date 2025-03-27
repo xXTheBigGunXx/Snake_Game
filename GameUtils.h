@@ -9,10 +9,14 @@
 class GameUtils {
 private: 
 	const int _FPS = 60;
+	int _frame_count;
+
 	const int _scroll_speed = 100;
 	const int _padding = 50;
 
 	const int _background_squares_length = 900;
+
+	const int _apple_count = 10;
 
 	Texture2D _clouds;
 	Texture2D _background;
@@ -29,6 +33,7 @@ public:
 	void LoadBackground();
 
 	void LoopSnake();
+	void PlaceAndUpdateApples();
 };
 
 #endif

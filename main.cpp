@@ -5,4 +5,3 @@ int main()
     GameUtils game;
     game.RunGame();
 }
-
