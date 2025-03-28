@@ -14,20 +14,11 @@ Snake::Snake(int x_offset, int y_offset, int squares_length, int _FPS) {
 	_temp_accseleration = std::make_pair(0, 0);
 
 	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2 + _snakes_square_width/2, _y_offset + squares_length/2 + _snakes_square_width/2));
-	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2 +  - _snakes_square_width/2, _y_offset + squares_length/2 + _snakes_square_width/2));
+	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2, _y_offset + squares_length/2 + _snakes_square_width/2));
 }
 
 std::pair<int,int> Snake::DistributeAccseleration() {
 	char key_pressed = TaskUtils::KeyPressed();
-	//std::cout << key_pressed << '\n';
-	/*switch (TaskUtils::KeyPressed()) {
-	case 'W': return std::make_pair(0, -1);
-	case 'S': return std::make_pair(0, 1);
-	case 'A': return std::make_pair(-1, 0);
-	case 'D': return std::make_pair(1, 0);
-	default: return _temp_accseleration;
-	}*/
-
 	std::pair<int, int> temp;
 
 	if ((key_pressed == 'W' || key_pressed == '&') && _temp_accseleration != std::make_pair(0,1)){

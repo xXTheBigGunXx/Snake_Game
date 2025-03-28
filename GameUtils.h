@@ -18,12 +18,17 @@ private:
 
 	const int _apple_count = 10;
 
+	std::string mess = "Start game!";
+
 	Texture2D _clouds;
 	Texture2D _background;
 	Texture2D _apple_texture;
+	Texture2D _snakes_head_texture;
 
 	float _background_x;
 	bool _game_over = false;
+
+	bool start_of_a_game = true;
 
 	Snake* _snake;
 	ApplesInformation* _apples;
@@ -36,6 +41,8 @@ public:
 
 	void LoopSnake();
 	void PlaceAndUpdateApples();
+
+	Texture2D RotateTexture90(Texture2D texture, bool clock_wise);
 };
 
 #endif

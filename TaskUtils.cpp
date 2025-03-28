@@ -11,6 +11,7 @@ namespace win {
 const char* TaskUtils::_clouds_path = "Textures\\clouds.jpg";
 const char* TaskUtils::_bc_path = "Textures\\background.jpg";
 const char* TaskUtils::_apple_path = "Textures\\apple.png";
+const char* TaskUtils::_snake_head_path = "Textures\\snakeshead.png";
 
 int TaskUtils::RandomInt(int range) {
     int num;
