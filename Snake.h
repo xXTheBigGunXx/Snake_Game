@@ -32,6 +32,8 @@ public:
 	bool AccselerationZero();
 	int HeadHitApple(const ApplesInformation* apples);
 	bool GoingBackwards(const std::pair<int, int>& pair);
+	bool OutOfBounds(int squares_width);
+	bool HitItself();
 };
 
 #endif

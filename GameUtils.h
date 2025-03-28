@@ -23,6 +23,7 @@ private:
 	Texture2D _apple_texture;
 
 	float _background_x;
+	bool _game_over = false;
 
 	Snake* _snake;
 	ApplesInformation* _apples;

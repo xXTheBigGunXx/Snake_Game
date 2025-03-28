@@ -93,5 +93,31 @@ int Snake::HeadHitApple(const ApplesInformation* apples) {
 }
 
 bool Snake::GoingBackwards(const std::pair<int, int>& pair) {
+	auto first_element = _snakes_body.front();
+	if (std::make_pair(first_element.first + (_move_per_frame * pair.first), first_element.second + (_move_per_frame * pair.second)) == *std::next(_snakes_body.begin())) {
+		return true;
+	}
+	return false;
+}
+
+bool Snake::OutOfBounds(int squares_width) {
+	auto first_element = _snakes_body.front();
+
+	if (first_element.first - _x_offset < 0 || first_element.second - _y_offset < 0) {
+		return true;
+	}
+	else if ((first_element.first + _snakes_square_width) > squares_width + _x_offset || (first_element.second + _snakes_square_width) > squares_width + _y_offset) {
+		return true;
+	}
+	return false;
+}
+
+bool Snake::HitItself() {
+	auto front = _snakes_body.front();
+
+	for (auto it = std::next(_snakes_body.begin()); it != _snakes_body.end(); it++) {
+		if (front == *it)
+			return true;
+	}
 	return false;
 }

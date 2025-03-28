@@ -41,8 +41,15 @@ void GameUtils::RunGame() {
 		LoopBackground();
 		LoadBackground();
 
-		LoopSnake();
 		PlaceAndUpdateApples();
+		LoopSnake();
+
+		//std::cout << (*_snake->Begin()).first << '|' << (*_snake->Begin()).second << std::endl;
+
+		if (_snake->OutOfBounds(_background_squares_length) || _snake->HitItself()) {
+			DrawText("Game Over!", GetScreenWidth()/2 - 250, GetScreenHeight()/2 - 25, 100, BLACK);
+			_game_over = true;
+		}
 
 		EndDrawing();
 		_frame_count++;
@@ -76,20 +83,22 @@ void GameUtils::LoadBackground() {
 }
 
 void GameUtils::LoopSnake() {
-	auto temp = _snake->DistributeAccseleration();
+	if(_game_over == false){
+		auto temp = _snake->DistributeAccseleration();
 
-	if (temp.first != _snake->_temp_accseleration.first || temp.second != _snake->_temp_accseleration.second)
-		_snake->_temp_accseleration = temp;
+		if (temp.first != _snake->_temp_accseleration.first || temp.second != _snake->_temp_accseleration.second)
+			_snake->_temp_accseleration = temp;
 
 	//std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
 
-	if (_snake->AccselerationZero() || _frame_count % (_FPS / _snake->_speed) == 0) {
-		_snake->_accseleration = _snake->_temp_accseleration;
-		_frame_count = 0;
-	}
-	if (!_snake->AccselerationZero()){
-		_snake->Pop_Back();
-		_snake->Push_Front(_snake->IncramentedPair());
+		if (_snake->AccselerationZero() || _frame_count % (_FPS / _snake->_speed) == 0) {
+			_snake->_accseleration = _snake->_temp_accseleration;
+			_frame_count = 0;
+		}
+		if (!_snake->AccselerationZero()) {
+			_snake->Pop_Back();
+			_snake->Push_Front(_snake->IncramentedPair());
+		}
 	}
 	
 
