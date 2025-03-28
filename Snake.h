@@ -3,11 +3,12 @@
 
 #include <list>
 #include <utility>
+#include "RandomApples.h"
 
 class Snake {
 public:
 	std::list < std::pair<int, int>> _snakes_body;
-	const int _snakes_squere_width = 60;
+	const int _snakes_square_width = 60;
 	int _move_per_frame;
 
 	int _x_start;
@@ -15,7 +16,7 @@ public:
 
 	int _x_offset;
 	int _y_offset;
-	const int _speed = 8;
+	const int _speed = 6;
 
 	std::pair<int, int> _accseleration;
 	std::pair<int, int> _temp_accseleration;
@@ -29,6 +30,8 @@ public:
 	void Pop_Back();
 	std::pair<int, int> IncramentedPair();
 	bool AccselerationZero();
+	int HeadHitApple(const ApplesInformation* apples);
+	bool GoingBackwards(const std::pair<int, int>& pair);
 };
 
 #endif

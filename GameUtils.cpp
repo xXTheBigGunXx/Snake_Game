@@ -76,25 +76,37 @@ void GameUtils::LoadBackground() {
 }
 
 void GameUtils::LoopSnake() {
-	_snake->_temp_accseleration = _snake->DistributeAccseleration();
+	auto temp = _snake->DistributeAccseleration();
 
-	std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
+	if (temp.first != _snake->_temp_accseleration.first || temp.second != _snake->_temp_accseleration.second)
+		_snake->_temp_accseleration = temp;
+
+	//std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
 
 	if (_snake->AccselerationZero() || _frame_count % (_FPS / _snake->_speed) == 0) {
 		_snake->_accseleration = _snake->_temp_accseleration;
 		_frame_count = 0;
 	}
-
-	_snake->Pop_Back();
-	_snake->Push_Front(_snake->IncramentedPair());
+	if (!_snake->AccselerationZero()){
+		_snake->Pop_Back();
+		_snake->Push_Front(_snake->IncramentedPair());
+	}
 	
 
 	std::for_each(_snake->Begin(), _snake->End(), [&](const std::pair<int,int>& pair) {
-		DrawRectangle(pair.first, pair.second, _snake->GetSquaresLength(), _snake->GetSquaresLength(), RED);
+		//DrawRectangle(pair.first, pair.second, _snake->GetSquaresLength(), _snake->GetSquaresLength(), RED);
+		DrawCircle(pair.first + 30, pair.second + 30, 30.0f, YELLOW);
 	});
 }
 
 void GameUtils::PlaceAndUpdateApples() {
+	int index = _snake->HeadHitApple(_apples);
+	if(index != -1){
+		_apples->_index--;
+		_snake->_snakes_body.push_back(std::make_pair(0,0));
+		_apples->_coordinates.erase(_apples->_coordinates.begin() + index);
+		std::cout << "Deleted apple\n";
+	}
 	_apples->GenerateNApples();
 
 	for (size_t i = 0; i < _apples->_coordinates.size(); i++) {

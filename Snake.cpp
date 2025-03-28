@@ -3,7 +3,7 @@
 #include <iostream>
 
 Snake::Snake(int x_offset, int y_offset, int squares_length, int _FPS) {
-	_move_per_frame = _FPS / _snakes_squere_width * _speed;
+	_move_per_frame = _FPS / _snakes_square_width * _speed;
 	_x_start = 0;
 	_y_start = 0;
 
@@ -13,19 +13,42 @@ Snake::Snake(int x_offset, int y_offset, int squares_length, int _FPS) {
 	_accseleration = std::make_pair(0, 0);
 	_temp_accseleration = std::make_pair(0, 0);
 
-	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2, _y_offset + squares_length/2));
-	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2 - _snakes_squere_width, _y_offset + squares_length/2));
+	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2 + _snakes_square_width/2, _y_offset + squares_length/2 + _snakes_square_width/2));
+	_snakes_body.push_back(std::make_pair(_x_offset + squares_length/2 +  - _snakes_square_width/2, _y_offset + squares_length/2 + _snakes_square_width/2));
 }
 
 std::pair<int,int> Snake::DistributeAccseleration() {
-	std::cout << TaskUtils::KeyPressed() << std::endl;
-	switch (TaskUtils::KeyPressed()) {
+	char key_pressed = TaskUtils::KeyPressed();
+	//std::cout << key_pressed << '\n';
+	/*switch (TaskUtils::KeyPressed()) {
 	case 'W': return std::make_pair(0, -1);
 	case 'S': return std::make_pair(0, 1);
 	case 'A': return std::make_pair(-1, 0);
 	case 'D': return std::make_pair(1, 0);
 	default: return _temp_accseleration;
+	}*/
+
+	std::pair<int, int> temp;
+
+	if ((key_pressed == 'W' || key_pressed == '&') && _temp_accseleration != std::make_pair(0,1)){
+		temp =  std::make_pair(0, -1);
 	}
+	else if ((key_pressed == 'S' || key_pressed == '(') && _temp_accseleration != std::make_pair(0,-1)) {
+		temp =  std::make_pair(0, 1);
+	}
+	else if ((key_pressed == 'A' || key_pressed == '%') && _temp_accseleration != std::make_pair(1,0)){
+		temp = std::make_pair(-1, 0);
+	}
+	else if ((key_pressed == 'D' || key_pressed == '\'') && _temp_accseleration != std::make_pair(-1,0)){
+		temp = std::make_pair(1, 0);
+	}
+	else {
+		return _temp_accseleration;
+	}
+	if (!GoingBackwards(temp))
+		return temp;
+
+	return _temp_accseleration;
 }
 
 std::list<std::pair<int, int>>::iterator Snake::Begin() { 
@@ -37,7 +60,7 @@ std::list<std::pair<int, int>>::iterator Snake::End() {
 }
 
 int Snake::GetSquaresLength() { 
-	return _snakes_squere_width; 
+	return _snakes_square_width; 
 }
 
 void Snake::Push_Front(const std::pair<int, int>& pair) { 
@@ -56,4 +79,19 @@ std::pair<int, int> Snake::IncramentedPair()
 
 bool Snake::AccselerationZero() {
 	return _accseleration.first == _accseleration.second && _accseleration.first == 0;
+}
+
+int Snake::HeadHitApple(const ApplesInformation* apples) {
+	//std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+	for (size_t i = 0; i < apples->_coordinates.size(); i++) {
+		//std::cout << _snakes_body.back().first - _x_offset <<' '<<_snakes_body.back().second - _y_offset<<'|'<< apples->_coordinates[i].first<<' '<<apples->_coordinates[i].second << std::endl;
+		if (_snakes_body.front().first - _x_offset == apples->_coordinates[i].first && _snakes_body.front().second - _y_offset == apples->_coordinates[i].second) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool Snake::GoingBackwards(const std::pair<int, int>& pair) {
+	return false;
 }

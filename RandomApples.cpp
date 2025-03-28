@@ -1,20 +1,26 @@
 #include "RandomApples.h"
 #include "TaskUtils.h"
+#include <iostream>
 
-ApplesInformation::ApplesInformation(size_t n, int width): _index(0), _count(n), _width(width) {}
+ApplesInformation::ApplesInformation(int n, int width): _index(0), _count(n), _width(width) {}
 
 ApplesInformation::~ApplesInformation() {
 	_coordinates.clear();
 }
 
 void ApplesInformation::GenerateNApples() {
+	/*_coordinates.push_back(std::make_pair(0, 0));
+	_index = 0;
+	_count = 0;
+	return;*/
 	for (; _index < _count; _index++){
 		std::pair<int, int> coords(TaskUtils::RandomInt(_width), TaskUtils::RandomInt(_width));
-		if (Contains(coords)) {
+		if (Contains(coords) || coords.first < 0 || coords.second < 0) {
 			_index--;
 			continue;
 		}
 		_coordinates.push_back(coords);
+		std::cout << coords.first << ' ' << coords.second << std::endl;
 	}
 }
 

@@ -1,23 +1,26 @@
 #include "TaskUtils.h"
 #include <cmath>
+#include <iostream>
 
 namespace win {
     #include <windows.h>
 }
 #include <bcrypt.h>
-
 #pragma comment(lib, "bcrypt.lib")
 
 const char* TaskUtils::_clouds_path = "Textures\\clouds.jpg";
 const char* TaskUtils::_bc_path = "Textures\\background.jpg";
-const char* TaskUtils::_apple_path = "Textures\\apple.jpg";
+const char* TaskUtils::_apple_path = "Textures\\apple.png";
 
-int TaskUtils::RandomInt(size_t range) {
+int TaskUtils::RandomInt(int range) {
     int num;
     if (win::BCryptGenRandom(NULL, (win::PUCHAR)&num, sizeof(num), BCRYPT_USE_SYSTEM_PREFERRED_RNG) != 0) {
-        return 0;
+        return -1;
     }
-    return std::round(static_cast<int>(num % range) / 60)  * 60;
+    int temp = static_cast<int>((num % range) / 60)  * 60;
+    if (temp < 0)
+        return -1;
+    return temp;
 }
 
 char TaskUtils::KeyPressed() {
