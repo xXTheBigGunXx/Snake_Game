@@ -1,6 +1,5 @@
 #include "TaskUtils.h"
 #include <cmath>
-#include <iostream>
 
 namespace win {
     #include <windows.h>

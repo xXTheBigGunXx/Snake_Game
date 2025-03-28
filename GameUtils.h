@@ -3,7 +3,6 @@
 
 #include <string>
 #include "raylib.h"
-//#include "RandomApples.h"
 #include "Snake.h"
 
 class GameUtils {

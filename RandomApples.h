@@ -6,7 +6,6 @@
 
 class ApplesInformation {
 private:
-	//std::vector<std::pair<int, int>> _coordinates;
 	bool Contains(const std::pair<int, int>& pair);
 	bool Equals(const std::pair<int, int>& left, const std::pair<int, int>& right);
 	int _width;

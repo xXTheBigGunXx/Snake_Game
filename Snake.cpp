@@ -1,6 +1,5 @@
 #include "Snake.h"
 #include "TaskUtils.h"
-#include <iostream>
 
 Snake::Snake(int x_offset, int y_offset, int squares_length, int _FPS) {
 	_move_per_frame = _FPS / _snakes_square_width * _speed;
@@ -73,9 +72,7 @@ bool Snake::AccselerationZero() {
 }
 
 int Snake::HeadHitApple(const ApplesInformation* apples) {
-	//std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 	for (size_t i = 0; i < apples->_coordinates.size(); i++) {
-		//std::cout << _snakes_body.back().first - _x_offset <<' '<<_snakes_body.back().second - _y_offset<<'|'<< apples->_coordinates[i].first<<' '<<apples->_coordinates[i].second << std::endl;
 		if (_snakes_body.front().first - _x_offset == apples->_coordinates[i].first && _snakes_body.front().second - _y_offset == apples->_coordinates[i].second) {
 			return i;
 		}

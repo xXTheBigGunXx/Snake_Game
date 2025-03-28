@@ -2,21 +2,16 @@
 #include "TaskUtils.h"
 #include <algorithm>
 #include <utility>
-#include <iostream>
 
 GameUtils::GameUtils() {
 	InitWindow(0, 0, "");
-	//InitWindow(200, 200, "");
 	ToggleFullscreen();
 	SetTargetFPS(_FPS);
-	//HideCursor();
 
 	_clouds = LoadTexture(TaskUtils::_clouds_path);
 	_background = LoadTexture(TaskUtils::_bc_path);
 	_apple_texture = LoadTexture(TaskUtils::_apple_path);
 	_snakes_head_texture = LoadTexture(TaskUtils::_snake_head_path);
-
-	//_snakes_head_texture = RotateTexture90(_snakes_head_texture, false);
 
 	_snake = new Snake((GetScreenWidth() - _background_squares_length) / 2, (GetScreenHeight() - _background_squares_length) / 2, _background_squares_length, _FPS);
 	_apples = new ApplesInformation(_apple_count, _background_squares_length);
@@ -48,7 +43,7 @@ void GameUtils::RunGame() {
 		if (start_of_a_game == true) {
 			Rectangle button = { GetScreenWidth()/2 - 300, GetScreenHeight()/2 - 75, 600, 150};
 			DrawRectangleRec(button, LIGHTGRAY);
-			DrawText(mess.c_str(), GetScreenWidth() / 2 - (mess.length() * 15), GetScreenHeight() / 2, 50, DARKGRAY);
+			DrawText(mess.c_str(), GetScreenWidth() / 2 - (mess.length() * 13), GetScreenHeight() / 2 - 25, 50, DARKGRAY);
 
 			if (CheckCollisionPointRec(GetMousePosition(), button)) {
 				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -61,8 +56,6 @@ void GameUtils::RunGame() {
 
 			PlaceAndUpdateApples();
 			LoopSnake();
-
-			//std::cout << (*_snake->Begin()).first << '|' << (*_snake->Begin()).second << std::endl;
 
 			if (_snake->OutOfBounds(_background_squares_length) || _snake->HitItself()) {
 				DrawText("Game Over!", GetScreenWidth() / 2 - 250, GetScreenHeight() / 2 - 25, 100, BLACK);
@@ -117,9 +110,6 @@ void GameUtils::LoopSnake() {
 		if (temp.first != _snake->_temp_accseleration.first || temp.second != _snake->_temp_accseleration.second) {
 			changes_dirrection = true;
 			if (changes_dirrection == true) {
-
-				
-
 				if (temp == std::make_pair(1, 0)) {
 					if (_snake->_temp_accseleration == std::make_pair(0, -1))
 						_snakes_head_texture = RotateTexture90(_snakes_head_texture, true);
@@ -148,8 +138,6 @@ void GameUtils::LoopSnake() {
 			_snake->_temp_accseleration = temp;
 		}
 
-	//std::cout << _snake->_accseleration.first << ' ' << _snake->_accseleration.second << std::endl;
-
 		if (_snake->AccselerationZero() || _frame_count % (_FPS / _snake->_speed) == 0) {
 			_snake->_accseleration = _snake->_temp_accseleration;
 			_frame_count = 0;
@@ -163,7 +151,6 @@ void GameUtils::LoopSnake() {
 	int count = 0;
 
 	std::for_each(_snake->_snakes_body.rbegin(), _snake->_snakes_body.rend(), [&](const std::pair<int, int>& pair) {
-		//DrawRectangle(pair.first, pair.second, _snake->GetSquaresLength(), _snake->GetSquaresLength(), RED);
 
 		if (pair == *_snake->Begin())
 			DrawTexture(_snakes_head_texture, pair.first + _snake->_accseleration.first * 10, pair.second + _snake->_accseleration.second * 10, WHITE);
@@ -183,7 +170,7 @@ void GameUtils::LoopSnake() {
 void GameUtils::PlaceAndUpdateApples() {
 	int index = _snake->HeadHitApple(_apples);
 
-	if(index != -1){
+	if (index != -1) {
 		_apples->_index--;
 
 		std::pair<int, int> temp;
@@ -194,7 +181,6 @@ void GameUtils::PlaceAndUpdateApples() {
 		}
 
 		_apples->_coordinates.erase(_apples->_coordinates.begin() + index);
-		std::cout << "Deleted apple\n";
 	}
 	_apples->GenerateNApples();
 
@@ -204,10 +190,7 @@ void GameUtils::PlaceAndUpdateApples() {
 }
 
 Texture2D GameUtils::RotateTexture90(Texture2D texture, bool clock_wise) {
-	// Load image data from texture
 	Image image = LoadImageFromTexture(texture);
-
-	// Rotate the image by 90 degrees
 
 	if (clock_wise) {
 		ImageRotateCW(&image);
@@ -215,11 +198,7 @@ Texture2D GameUtils::RotateTexture90(Texture2D texture, bool clock_wise) {
 	else {
 		ImageRotateCCW(&image);
 	}
-
-	// Convert the rotated image back to a texture
 	Texture2D rotatedTexture = LoadTextureFromImage(image);
-
-	// Free the image data from RAM
 	UnloadImage(image);
 
 	return rotatedTexture;
